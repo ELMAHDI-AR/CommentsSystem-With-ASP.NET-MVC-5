@@ -1,0 +1,133 @@
+﻿@model   IQueryable<CommentsSystemMVC5.ViewModels.CommentsVM>
+@using CommentsSystemMVC5.ViewModels;
+
+
+    @if (Model != null)
+    {
+
+        foreach (CommentsVM comment in Model)
+        {
+            <div class="row" style="width: 100.3%; border-bottom: 1px solid #d2cece; margin-right: -14px; margin-left: -1px;">
+
+                <div class="col-md-4" style="width: 21%;">
+                    <div class="userProfil" style="margin-left: 9px; margin-top: 12px;">
+                        <img src="~/Images/@comment.Users.imageProfile" class="img-circle" style="width: 46px; height: 53px; border: 1px solid #bcb8b8;" />
+                        <a href="#" style="margin-left: 5px; font-weight: bold; font-size: 13px;"> @comment.Users.Username </a>
+                    </div>
+                </div>
+
+                <div class="col-md-7" style="width: 60%;">
+                    <div class="commentDetails">
+                        <p style="margin-top: 27px; font-size: 13px; color: #9c9898;"> @comment.CommentMsg </p>
+                        <a href="#" class="Reply" data-id="@comment.ComID">Reply</a>
+                        <div class="@string.Format("{0}_{1}", "ReplayComments", comment.ComID)" style="display:none;">
+
+
+                            <div class="ReplayCommentInput" style="margin-left: 3%;  margin-bottom: 5px; margin-top: 8px;">
+                                <input type="text" id="@string.Format("{0}_{1}", "inputReplay", comment.ComID)" class="form-control"  placeholder="Add a Comment ..." style="display: inline;" />
+                                <button type="button" class="btn btn-default ReplyAddComment" data-id="@comment.ComID"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-1" style="width: 19%;">
+                    <div class="commentDate">
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        <time class="timeago" style="margin-top: 27px; font-size: 13px; color: #9c9898;  margin-left: 4px;" datetime="@comment.CommentedDate">@comment.CommentedDate</time>
+  
+                    </div>
+                </div>
+            </div>
+
+        }
+
+
+    }
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //Get All ReplyComment
+        $('.Reply').on('click', function () {
+
+            var ComID = $(this).attr('data-id');
+            
+            $.ajax({
+
+                type: 'GET',
+                url: '@Url.Action("GetSubComments", "Comments")',
+                data: { ComID },
+                success: function (response) {
+
+                    if ($('div').hasClass('zoneReply_' + ComID + ''))
+                    {
+                        $('div [class=zoneReply_' + ComID + ']').remove();
+                    }
+
+                    var selReply = $("<div>").addClass('zoneReply_' + ComID);
+
+                    selReply.append(response);
+                    selReply.prependTo($('.ReplayComments_' + ComID));
+
+                    $('.ReplayComments_' + ComID).show();
+
+                },
+                error: function (response) {
+                    alert('something Wrong');
+                }
+            });
+
+        });
+
+        //Add Reply Comment
+        $('.ReplyAddComment').on('click', function () {
+
+            var ComID = $(this).attr('data-id');
+            var CommentMsg = $('#inputReplay_' + ComID).val();
+            var dateTimeNow = new Date();
+
+            var subComment = {
+                CommentMsg: CommentMsg,
+                CommentedDate: dateTimeNow.toLocaleString()
+            };
+            
+
+            $.ajax({
+
+                type: 'POST',
+                url: '@Url.Action("AddSubComment", "Comments")',
+                data: { subComment, ComID },
+                success: function (response) {
+
+                    if ($('div').hasClass('zoneReply_' + ComID + '')) {
+                        $('div [class=zoneReply_' + ComID + ']').remove();
+                    }
+
+                    var selReply = $("<div>").addClass('zoneReply_' + ComID);
+
+                    selReply.append(response);
+                    selReply.prependTo($('.ReplayComments_' + ComID));
+
+                    $('.ReplayComments_' + ComID).show();
+
+                },
+                error: function (response) {
+                    alert('something Wrong');
+                }
+            });
+
+        });
+
+        jQuery("time.timeago").timeago();
+
+
+    })
+
+
+</script>
+

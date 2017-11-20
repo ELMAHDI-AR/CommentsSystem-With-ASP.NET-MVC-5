@@ -1,0 +1,46 @@
+﻿@model IQueryable<CommentsSystemMVC5.ViewModels.SubCommentsVM>
+@using CommentsSystemMVC5.ViewModels
+
+
+    @if (Model != null)
+    {
+
+        foreach (SubCommentsVM subComment in Model)
+        {
+            <div class="row" style="width: 100.3%; border-bottom: 1px solid #d2cece; margin-right: -14px; margin-left: -1px;">
+
+                <div class="col-md-4" style="width: 36%;">
+                    <div class="userProfil" style="margin-left: 9px; margin-top: 12px;">
+                        <img src="~/Images/@subComment.User.imageProfile" class="img-circle" style="width: 46px; height: 53px; border: 1px solid #bcb8b8;" />
+                        <a href="#" style="margin-left: 5px; font-weight: bold; font-size: 13px;"> @subComment.User.Username </a>
+                    </div>
+                </div>
+
+                <div class="col-md-7" style="width: 32%;">
+                    <div class="commentDetails">
+                        <p style="margin-top: 27px; font-size: 13px; color: #9c9898;"> @subComment.CommentMsg </p>
+                    </div>
+                </div>
+
+                <div class="col-md-1" style="width: 32%;">
+                    <div class="commentDetails">
+                        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+                        <time class="timeago" style="margin-top: 27px; font-size: 13px; color: #9c9898;  margin-left: 4px;" datetime="@subComment.CommentedDate">@subComment.CommentedDate</time>
+
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        jQuery("time.timeago").timeago();
+    });
+
+</script>
+
+

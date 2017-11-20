@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "GetUsers";
+}
+
+
+@using (Html.BeginForm("GetUsers", "Comments", FormMethod.Post))
+{
+    <div class="blockUser" style="width: 44%; margin: 16% 26%;">
+
+        <div style="margin-left: 23%;">
+            <input type="text" class="form-control input-lg" name="username" placeholder="Username" /><br />
+            <input type="submit" class="btn btn-success btn-lg" value="Let's GO ^_^" style="width: 75%;" />
+        </div>
+
+    </div>
+
+}
+
+@if (ViewBag.Msg != null)
+{
+    <div class="alert alert-danger" role="alert">Oups! @ViewBag.Msg</div>
+}
+
+
+
+
+

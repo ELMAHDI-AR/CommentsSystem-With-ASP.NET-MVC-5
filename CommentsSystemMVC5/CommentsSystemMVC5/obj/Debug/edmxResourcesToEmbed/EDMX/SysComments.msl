@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DBCommentsModelStoreContainer" CdmEntityContainer="DBCommentsEntities">
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="DBCommentsModel.Comment">
+        <MappingFragment StoreEntitySet="Comments">
+          <ScalarProperty Name="ComID" ColumnName="ComID" />
+          <ScalarProperty Name="CommentMsg" ColumnName="CommentMsg" />
+          <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Posts">
+      <EntityTypeMapping TypeName="DBCommentsModel.Post">
+        <MappingFragment StoreEntitySet="Posts">
+          <ScalarProperty Name="PostID" ColumnName="PostID" />
+          <ScalarProperty Name="Message" ColumnName="Message" />
+          <ScalarProperty Name="PostedDate" ColumnName="PostedDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SubComments">
+      <EntityTypeMapping TypeName="DBCommentsModel.SubComment">
+        <MappingFragment StoreEntitySet="SubComments">
+          <ScalarProperty Name="SubComID" ColumnName="SubComID" />
+          <ScalarProperty Name="CommentMsg" ColumnName="CommentMsg" />
+          <ScalarProperty Name="CommentedDate" ColumnName="CommentedDate" />
+          <ScalarProperty Name="ComID" ColumnName="ComID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="DBCommentsModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="imageProfile" ColumnName="imageProfile" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

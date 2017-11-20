@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DBCommentsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="ComID" />
+    </Key>
+    <Property Name="ComID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CommentMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CommentedDate" Type="DateTime" Precision="3" />
+    <Property Name="PostID" Type="Int32" />
+    <Property Name="UserID" Type="Int32" />
+    <NavigationProperty Name="Post" Relationship="Self.FK_Comments_Users" FromRole="Comments" ToRole="Posts" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Comments_Users1" FromRole="Comments" ToRole="Users" />
+    <NavigationProperty Name="SubComments" Relationship="Self.FK_SubComments_Comments" FromRole="Comments" ToRole="SubComments" />
+  </EntityType>
+  <EntityType Name="Post">
+    <Key>
+      <PropertyRef Name="PostID" />
+    </Key>
+    <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Message" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PostedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Users" FromRole="Posts" ToRole="Comments" />
+  </EntityType>
+  <EntityType Name="SubComment">
+    <Key>
+      <PropertyRef Name="SubComID" />
+    </Key>
+    <Property Name="SubComID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CommentMsg" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CommentedDate" Type="DateTime" Precision="3" />
+    <Property Name="ComID" Type="Int32" />
+    <Property Name="UserID" Type="Int32" />
+    <NavigationProperty Name="Comment" Relationship="Self.FK_SubComments_Comments" FromRole="SubComments" ToRole="Comments" />
+    <NavigationProperty Name="User" Relationship="Self.FK_SubComments_Users" FromRole="SubComments" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="imageProfile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK_Comments_Users1" FromRole="Users" ToRole="Comments" />
+    <NavigationProperty Name="SubComments" Relationship="Self.FK_SubComments_Users" FromRole="Users" ToRole="SubComments" />
+  </EntityType>
+  <Association Name="FK_Comments_Users">
+    <End Role="Posts" Type="Self.Post" Multiplicity="0..1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="PostID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="PostID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Comments_Users1">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Comments">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubComments_Comments">
+    <End Role="Comments" Type="Self.Comment" Multiplicity="0..1" />
+    <End Role="SubComments" Type="Self.SubComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Comments">
+        <PropertyRef Name="ComID" />
+      </Principal>
+      <Dependent Role="SubComments">
+        <PropertyRef Name="ComID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SubComments_Users">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="SubComments" Type="Self.SubComment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="SubComments">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DBCommentsEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="Posts" EntityType="Self.Post" />
+    <EntitySet Name="SubComments" EntityType="Self.SubComment" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Comments_Users" Association="Self.FK_Comments_Users">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Comments_Users1" Association="Self.FK_Comments_Users1">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comments" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubComments_Comments" Association="Self.FK_SubComments_Comments">
+      <End Role="Comments" EntitySet="Comments" />
+      <End Role="SubComments" EntitySet="SubComments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SubComments_Users" Association="Self.FK_SubComments_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="SubComments" EntitySet="SubComments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
